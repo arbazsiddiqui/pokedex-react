@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "homepage": "http://arbazsiddiqui.github.io/pokedex-react/",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --open --mode development",
-    "build": "webpack"
+    "build": "webpack",
+    "predeploy" : "npm run build",
+    "deploy" : "gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +36,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "gh-pages": "^2.0.1",
     "lodash": "^4.17.11",
     "react-infinite-scroller": "^1.2.2",
     "redux-devtools-extension": "^2.13.7",

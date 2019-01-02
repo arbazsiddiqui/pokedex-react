@@ -16,7 +16,7 @@ class PokemonList extends Component {
 	}
 
 	componentDidMount() {
-		this.initialLoad = false;
+		// this.initialLoad = false;
 	}
 
 	loadMore() {
@@ -47,13 +47,14 @@ class PokemonList extends Component {
 					<Menu.Item name='pokedex'/>
 				</Menu>
 				<InfiniteScroll
-					className="card-list"
+					// className="card-list"
 					pageStart={0}
 					initialLoad = {this.initialLoad}
 					loadMore={this.loadMore}
 					// loader={<Loader active inline='centered' />}
 					hasMore={this.hasMore}
 					useWindow={true}
+					// threshold={500}
 				>
 					<Container >
 						<Grid relaxed columns={5}>
