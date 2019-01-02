@@ -1,7 +1,8 @@
 import {Component} from "react";
 import React from "react";
 import {Card, Image} from 'semantic-ui-react'
-import PokemonDetailsModal from './PokemonDetailsModal'
+import PokemonDetailsModal from '../containers/ConnectedPokemonDetails'
+import * as title from 'title-case'
 
 class PokemonCard extends Component {
 	constructor() {
@@ -26,19 +27,16 @@ class PokemonCard extends Component {
 	}
 
 	render() {
-		const {pokemon, loadingDetails} = this.props;
+		const {pokemon, loadingDetails, pokemonId} = this.props;
 		return (
 			<div>
 				<a href="#" onClick={this.handleClick}><Card color='red'>
 					<Image src={pokemon.imgUrl}/>
 					<Card.Content>
-						<Card.Header>{pokemon.name}</Card.Header>
-						{/*<Card.Meta>*/}
-							{/*<span className='date'>{pokemon.height}</span>*/}
-						{/*</Card.Meta>*/}
+						<Card.Header>{title(pokemon.name)}</Card.Header>
 					</Card.Content>
 				</Card></a>
-				{this.state.isShowingModal && <PokemonDetailsModal pokemon={pokemon} loadingDetails = {loadingDetails} handleClose={this.handleClose}/>}
+				{this.state.isShowingModal && <PokemonDetailsModal pokemonId={pokemonId} pokemon={pokemon} loadingDetails = {loadingDetails} handleClose={this.handleClose}/>}
 			</div>
 		)
 	}

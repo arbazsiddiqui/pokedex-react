@@ -1,9 +1,12 @@
-import { RECEIVE_POKEMON_LIST, RECEIVE_POKEMON_DETAILS, POKEMON_DETAILS_LOADING } from "../constants/action-types";
+import { RECEIVE_POKEMON_LIST, RECEIVE_POKEMON_DETAILS, UPDATE_POKEMON_DETAILS_LOADING, RECEIVE_POKEMON_EVOLUTION, UPDATE_POKEMON_EVOLUTION_LOADING } from "../constants/action-types";
 import {extractPokemonId} from '../utils';
+import * as _ from 'lodash'
 
 const initialState = {
 	pokemons: {},
-	loadingDetails : false
+	evolutionChains : {},
+	loadingDetails : false,
+	loadingEvolution : false
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -30,11 +33,31 @@ const rootReducer = (state = initialState, action) => {
 			oldPokemonsDetails[id].weight = weight;
 			oldPokemonsDetails[id].types = types;
 			oldPokemonsDetails[id].stats = stats;
+			oldPokemonsDetails[id].id = id;
 			oldPokemonsDetails[id].base_experience = base_experience;
 			return {...state, pokemons: oldPokemonsDetails};
 
-		case POKEMON_DETAILS_LOADING :
+		case UPDATE_POKEMON_DETAILS_LOADING :
 			return {...state, loadingDetails : action.payload};
+
+		case UPDATE_POKEMON_EVOLUTION_LOADING :
+			return {...state, loadingEvolution : action.payload};
+
+		case RECEIVE_POKEMON_EVOLUTION :
+			const oldPokemonsEvolutions= {...state.pokemons};
+			const oldEvolutionChain = {...state.evolutionChains};
+			const evolution = [];
+			const evolves = (evolves_to) => {
+				if(!evolves_to)
+					return
+				const pokemonName = evolves_to.species.name;
+				evolution.push({name : pokemonName, image : _.get(Object.values(oldPokemonsEvolutions).find((pokemon => pokemon.name === pokemonName)), 'imgUrl', `https://via.placeholder.com/96?text=${pokemonName}`)});
+				evolves(evolves_to.evolves_to[0])
+			};
+			const {chain} = action.payload.data;
+			evolves(chain);
+			oldEvolutionChain[action.payload.pokemonId] = evolution;
+			return {...state, evolutionChains: oldEvolutionChain};
 
 		default:
 			return state;

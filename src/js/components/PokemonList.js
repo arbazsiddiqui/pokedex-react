@@ -2,7 +2,7 @@ import {Component} from "react";
 import React from "react";
 import InfiniteScroll from 'react-infinite-scroller'
 import PokemonCard from '../containers/ConnectedPokemonCard'
-import {Container, Grid} from 'semantic-ui-react'
+import {Container, Grid, Loader, Menu} from 'semantic-ui-react'
 
 class PokemonList extends Component {
 	constructor() {
@@ -30,7 +30,7 @@ class PokemonList extends Component {
 
 		return Object.keys(pokemons).map((id) => {
 			return (
-				<Grid.Column>
+				<Grid.Column key={id}>
 					<PokemonCard
 						pokemonId={id}
 						pokemon={pokemons[id]}
@@ -42,22 +42,27 @@ class PokemonList extends Component {
 
 	render() {
 		return (
-			<InfiniteScroll
-				className="card-list"
-				pageStart={0}
-				initialLoad = {this.initialLoad}
-				loadMore={this.loadMore}
-				// loader={this.renderLoader()}
-				hasMore={this.hasMore}
-				useWindow={true}
-			>
-				<Container >
-					<Grid relaxed columns={5}>
-						{this.renderList()}
-					</Grid>
-				</Container>
+			<div>
+				<Menu pointing secondary size='huge'>
+					<Menu.Item name='pokedex'/>
+				</Menu>
+				<InfiniteScroll
+					className="card-list"
+					pageStart={0}
+					initialLoad = {this.initialLoad}
+					loadMore={this.loadMore}
+					// loader={<Loader active inline='centered' />}
+					hasMore={this.hasMore}
+					useWindow={true}
+				>
+					<Container >
+						<Grid relaxed columns={5}>
+							{this.renderList()}
+						</Grid>
+					</Container>
 
-			</InfiniteScroll>
+				</InfiniteScroll>
+			</div>
 		);
 	}
 }
